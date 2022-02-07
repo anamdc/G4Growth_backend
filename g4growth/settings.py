@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-wb2*ep&kicc)#h_#s_)57rzg12@$!7jxmh-m@gonm0@q9p#$6)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*','http://g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com/']
 
 
 # Application definition
@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'g4growth.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'g4growth_db',
+        'USER': 'admin',
+        'PASSWORD': '5BlQFWShWe4zCOrxYer2',
+        'HOST': 'g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com',
+        'PORT': '3306',
     }
 }
 
