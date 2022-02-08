@@ -31,6 +31,9 @@ ALLOWED_HOSTS = ['*','http://g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com/
 # Application definition
 
 INSTALLED_APPS = [
+    'user',
+    'courses',
+    'credit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
