@@ -25,12 +25,14 @@ SECRET_KEY = 'django-insecure-wb2*ep&kicc)#h_#s_)57rzg12@$!7jxmh-m@gonm0@q9p#$6)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','http://g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com/']
+ALLOWED_HOSTS = [
+    '*', 'http://g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com/']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'user',
     'courses',
     'credit',
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
