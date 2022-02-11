@@ -6,7 +6,7 @@ from rest_framework import response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializers
+from .serializers import *
 from .models import User
 import jwt
 import datetime
@@ -120,3 +120,27 @@ class LogoutView(APIView):
         }
 
         return response
+
+class StudentAPI(APIView):
+    def get(self,request):
+        objectsmain=User.objects.all()
+        serializer=ViewSerializer(objectsmain,many=True)
+        return Response({'status':200,'message':serializer.data})
+    
+    
+class EditAPI(APIView):
+    
+    def post(self,request):
+        try:
+            objectsmain=User.objects.get(id=request.data['id'])
+            if objectsmain:
+                serializer=EditSerializer(objectsmain,data=request.data,partial=True)
+            if not serializer.is_valid():
+                print(serializer.errors)
+                return Response({'status':200,'message':serializer.errors})
+            serializer.save()
+            return Response({'status':200,'message':serializer.data})
+        
+        except Exception as ex:
+            print(ex)
+            return Response({'status':200,'message':'invalid id'})
