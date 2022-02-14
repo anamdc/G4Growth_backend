@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '*', 'http://g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com/']
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'user',
     'courses',
     'credit',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,4 +151,4 @@ PRIVATE_FILE_STORAGE = 'g4growth.storage_backends.PrivateMediaStorage'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATICFILES_DIRS = ['/images/']
+# STATICFILES_DIRS = ['/images/']

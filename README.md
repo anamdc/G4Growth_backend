@@ -12,3 +12,4 @@ https://docs.google.com/document/d/1fUI8I-BIlmtTe4gQ9oT1iYNgpAApeyZHsxSiAUV6fwY/
 ## apis
     - Send otp api < user >
     - 
+ssh -i "dev.pem" ubuntu@ec2-54-226-186-31.compute-1.amazonaws.com
