@@ -15,6 +15,11 @@ class PublicMediaStorage(S3Boto3Storage):
     file_overwrite = False
     default_acl = 'public-read'
 
+class PublicMediaStorage2(S3Boto3Storage):
+    location = settings.AWS_PUBLIC_MEDIA_LOCATION2
+    file_overwrite = False
+    default_acl = 'public-read'
+
 class PrivateMediaStorage(S3Boto3Storage):
     location = settings.AWS_PRIVATE_MEDIA_LOCATION
     default_acl = 'private'

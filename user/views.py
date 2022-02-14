@@ -123,13 +123,15 @@ class LogoutView(APIView):
 
 class UserAPI(APIView):
     def get(self,request):
-        token = request.COOKIES.get('jwt')
-        if not token:
-            raise AuthenticationFailed('Unauthenticated')
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Invalid')
+        # token = request.COOKIES.get('jwt')
+        # print(token)
+        # if not token:
+        #     raise AuthenticationFailed('Unauthenticated')
+        # try:
+        #     payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        #     print(payload)
+        # except jwt.ExpiredSignatureError:
+        #     raise AuthenticationFailed('Invalid')
         objectsmain=User.objects.all()
         serializer=ViewSerializer(objectsmain,many=True)
         return Response({'status':200,'message':serializer.data})

@@ -3,7 +3,7 @@ import profile
 from urllib import request
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
-
+from g4growth.storage_backends import PublicMediaStorage2
 # Create your models here.
 
 
@@ -11,7 +11,7 @@ class User(AbstractBaseUser):
     phoneno = models.BigIntegerField(unique=True)
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=True)
-    profile_img = models.ImageField(upload_to='profile_pics', blank=True)
+    profile_img = models.ImageField(storage = PublicMediaStorage2, blank=True)
     referral_id = models.CharField(max_length=7, unique=True, blank=True)
     referrer_id = models.CharField(max_length=7, blank=True)
     total_credit = models.IntegerField(default=0)
