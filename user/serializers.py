@@ -17,6 +17,7 @@ class UserSerializers(serializers.ModelSerializer):
         return instance
 
     def referral_code():
-        referral = ''.join(random.choice(
+        referral = 'G4'.join(random.choice(
             string.ascii_uppercase + string.digits) for _ in range(7))
+
         return referral
