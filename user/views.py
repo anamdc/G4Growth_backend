@@ -121,41 +121,81 @@ class LogoutView(APIView):
 
         return response
 
-class UserAPI(APIView):
-    def get(self,request):
-        # token = request.COOKIES.get('jwt')
-        # print(token)
-        # if not token:
-        #     raise AuthenticationFailed('Unauthenticated')
-        # try:
-        #     payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-        #     print(payload)
-        # except jwt.ExpiredSignatureError:
-        #     raise AuthenticationFailed('Invalid')
-        objectsmain=User.objects.all()
-        serializer=ViewSerializer(objectsmain,many=True)
-        return Response({'status':200,'message':serializer.data})
-    
-    
-class EditAPI(APIView):
-    def post(self,request):
+
+class UserView(APIView):
+
+    def get(self, request):
         token = request.COOKIES.get('jwt')
+
         if not token:
             raise AuthenticationFailed('Unauthenticated')
+
         try:
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Invalid')
+            raise AuthenticationFailed('Token Expired! Log in again.')
+
+        user = User.objects.filter(id=payload['id']).first()
+        serializer = UserSerializers(user)
+
+        return Response(serializer.data)
+
+
+class UpdateView(APIView):
+    def post(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+
         try:
-            objectsmain=User.objects.get(id=request.data['id'])
-            if objectsmain:
-                serializer=EditSerializer(objectsmain,data=request.data,partial=True)
-            if not serializer.is_valid():
-                print(serializer.errors)
-                return Response({'status':200,'message':serializer.errors})
-            serializer.save()
-            return Response({'status':200,'message':serializer.data})
-        
-        except Exception as ex:
-            print(ex)
-            return Response({'status':200,'message':'invalid id'})
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Token Expired! Log in again.')
+
+        response = Response()
+
+        user = User.objects.filter(id=payload['id']).first()
+
+        try:
+            name = request.data['name']
+        except:
+            name = user.name
+
+        try:
+            bank_name = request.data['bank_name']
+        except:
+            bank_name = user.bank_name
+
+        try:
+            account_no = request.data['account_no']
+        except:
+            account_no = user.account_no
+
+        try:
+            ifsc_code = request.data['ifsc_code']
+        except:
+            ifsc_code = user.ifsc_code
+
+        try:
+            email = request.data['email']
+        except:
+            email = user.email
+
+        try:
+            profile_img = request.data['profile_img']
+        except:
+            profile_img = user.profile_img
+
+        user.name = name
+        user.bank_name = bank_name
+        user.ifsc_code = ifsc_code
+        user.email = email
+        user.account_no = account_no
+        user.profile_img = profile_img
+        user.save()
+
+        response.data = {
+            'message': 'Profile successfully updated!'
+        }
+        return response
