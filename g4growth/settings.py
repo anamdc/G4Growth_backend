@@ -9,9 +9,13 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import environ
 from pathlib import Path
 import os
+
+#initializing environment 
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '*', 'http://g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com/']
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -36,6 +40,7 @@ INSTALLED_APPS = [
     'user',
     'courses',
     'credit',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -139,6 +144,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_STATIC_LOCATION = 'static'
 AWS_PUBLIC_MEDIA_LOCATION = 'courses/public'
+AWS_PUBLIC_MEDIA_LOCATION2 = 'profile_images'
 AWS_PRIVATE_MEDIA_LOCATION = 'courses/private'
 
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
@@ -150,4 +156,4 @@ PRIVATE_FILE_STORAGE = 'g4growth.storage_backends.PrivateMediaStorage'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATICFILES_DIRS = ['/images/']
+# STATICFILES_DIRS = ['/images/']
