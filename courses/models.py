@@ -38,3 +38,14 @@ class VideoUser(models.Model):
 
     def __str__(self):
         return self.userid.username
+
+class CourseUser(models.Model):
+    id = models.AutoField(primary_key=True)
+    courseid = models.ForeignKey(Video  , on_delete=models.CASCADE)
+    userid = models.ForeignKey('auth.User',on_delete=models.CASCADE)
+    date_purchased = models.DateTimeField(auto_now_add=True)
+    percentage = models.IntegerField(default=0)
+    payment_ss = models.ImageField(storage= PublicMediaStorage, blank=True, null=True)
+
+    def __str__(self):
+        return self.userid.username
