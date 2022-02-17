@@ -5,12 +5,14 @@ from django.conf import settings
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import serializers
+from rest_framework import serializers 
 import json 
-from .models import Course
-from .serializers import CourseSerializers 
+from .models import Course, CourseUser, Video, VideoUser
+from .serializers import CourseSerializers , VideoListViewSerializers
 from django.db import connection
-
+import jwt
+from rest_framework.exceptions import AuthenticationFailed
+from user.models import User
 
 
 class CoursesView(APIView):
@@ -34,3 +36,20 @@ class CoursesView(APIView):
             'data': data
         }
         return response
+
+class VideoListView(APIView):
+    def post(self,request):
+        # token = request.COOKIES.get('jwt')
+
+        # try:
+        #     payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        # except jwt.ExpiredSignatureError:
+        #     raise AuthenticationFailed('Token Expired! Log in again.')
+
+        # user = User.objects.filter(id=payload['id']).first()
+        course_id = request.data['course_id']
+        videos = Video.objects.filter(course=course_id).all()
+        print(videos)
+        result = VideoListViewSerializers(videos)
+        print(result.data)
+        return Response(result.data)

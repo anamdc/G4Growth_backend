@@ -32,7 +32,7 @@ class Video(models.Model):
 class VideoUser(models.Model):
     id = models.AutoField(primary_key=True)
     videoid = models.ForeignKey(Video  , on_delete=models.CASCADE)
-    userid = models.ForeignKey('auth.User',on_delete=models.CASCADE)
+    userid = models.ForeignKey(User,on_delete=models.CASCADE)
     date_purchased = models.DateTimeField(auto_now_add=True)
     is_watched = models.BooleanField(default=False)
 
@@ -41,8 +41,8 @@ class VideoUser(models.Model):
 
 class CourseUser(models.Model):
     id = models.AutoField(primary_key=True)
-    courseid = models.ForeignKey(Video  , on_delete=models.CASCADE)
-    userid = models.ForeignKey('auth.User',on_delete=models.CASCADE)
+    courseid = models.ForeignKey(Course, on_delete=models.CASCADE)
+    userid = models.ForeignKey(User,on_delete=models.CASCADE)
     date_purchased = models.DateTimeField(auto_now_add=True)
     percentage = models.IntegerField(default=0)
     payment_ss = models.ImageField(storage= PublicMediaStorage, blank=True, null=True)
