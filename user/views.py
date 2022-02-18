@@ -11,7 +11,7 @@ import random
 class LoginView(APIView):
     def post(self, request):
         phoneno = request.data['phoneno']
-        referral_id = request.data['referral_id']
+        referrer_id = request.data['referrer_id']
 
         user = User.objects.filter(phoneno=phoneno).first()
         if user is None:
@@ -42,7 +42,7 @@ class LoginView(APIView):
         }
         user.otp = otp
         user.otp_validity = time
-        user.referrer_id = referral_id
+        user.referrer_id = referrer_id
         user.save()
 
         return response
