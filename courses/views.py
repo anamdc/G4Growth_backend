@@ -39,17 +39,26 @@ class CoursesView(APIView):
 
 class VideoListView(APIView):
     def post(self,request):
-        # token = request.COOKIES.get('jwt')
+        token = request.COOKIES.get('jwt')
 
-        # try:
-        #     payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-        # except jwt.ExpiredSignatureError:
-        #     raise AuthenticationFailed('Token Expired! Log in again.')
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Token Expired! Log in again.')
 
         # user = User.objects.filter(id=payload['id']).first()
+        cursor = connection.cursor()
         course_id = request.data['course_id']
-        videos = Video.objects.filter(course=course_id).all()
-        print(videos)
-        result = VideoListViewSerializers(videos)
-        print(result.data)
-        return Response(result.data)
+
+        cursor.execute("SELECT id,title,description FROM courses_video where course_id = %s and status = 'active'",[course_id])
+        data = []
+        
+        for row in cursor.fetchall():
+            print(row)
+            res = {}
+            res['id'] = row[0]
+            res['title'] = row[1]
+            res['description'] = row[2]
+            data.append(res)
+        print(data)
+        return Response(data)
