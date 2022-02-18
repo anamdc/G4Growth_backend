@@ -77,9 +77,8 @@ class OTPView(APIView):
         cursor = connection.cursor()
         if(user.otp_validity.replace(tzinfo=None) >= datetime.datetime.utcnow()):
             if(otp == otp2):
-                # user.is_verified = True
                 if not user.is_verified:
-                    if user.referral_id:
+                    if user.referrer_id:
                         referrer_1 = User.objects.filter(
                             referral_id=user.referrer_id).first()
                         if not referrer_1:
@@ -88,6 +87,11 @@ class OTPView(APIView):
                                 'message': 'Wrong referrer ID, try again!'
                             }
                         else:
+                            user.is_verified = True
+                            user.save()
+                            response.data = {
+                                'message': 'Succesfully logged in!'
+                            }
                             query1 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_1.id}, {user.id}, 0)"
                             cursor.execute(query1)
 
@@ -96,23 +100,16 @@ class OTPView(APIView):
                                     referral_id=referrer_1.referrer_id).first()
                                 query1 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_2.id}, {user.id}, 1)"
                                 cursor.execute(query1)
-                                response.data = {
-                                    'message': 'Succesfully logged in!'
-                                }
-                            else:
-                                response.data = {
-                                    'message': 'Succesfully logged in!'
-                                }
                     else:
+                        user.save()
                         response.data = {
                             'message': 'Succesfully logged in!'
                         }
                 else:
+                    user.save()
                     response.data = {
                         'message': 'Succesfully logged in!'
                     }
-
-                user.save()
             else:
                 if(not user.is_verified):
                     User.objects.filter(id=payload['id']).delete()
