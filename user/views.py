@@ -6,6 +6,7 @@ from .models import User
 import jwt
 import datetime
 import random
+from django.db import connection
 
 
 class LoginView(APIView):
@@ -73,12 +74,44 @@ class OTPView(APIView):
         otp = str(otp)
         otp2 = request.data['otp']
         otp2 = str(otp2)
+        cursor = connection.cursor()
         if(user.otp_validity.replace(tzinfo=None) >= datetime.datetime.utcnow()):
             if(otp == otp2):
-                response.data = {
-                    'message': 'Succesfully logged in!'
-                }
-                user.is_verified = True
+                # user.is_verified = True
+                if not user.is_verified:
+                    if user.referral_id:
+                        referrer_1 = User.objects.filter(
+                            referral_id=user.referrer_id).first()
+                        if not referrer_1:
+                            response.delete_cookie('jwt')
+                            response.data = {
+                                'message': 'Wrong referrer ID, try again!'
+                            }
+                        else:
+                            query1 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_1.id}, {user.id}, 0)"
+                            cursor.execute(query1)
+
+                            if referrer_1.referrer_id:
+                                referrer_2 = User.objects.filter(
+                                    referral_id=referrer_1.referrer_id).first()
+                                query1 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_2.id}, {user.id}, 1)"
+                                cursor.execute(query1)
+                                response.data = {
+                                    'message': 'Succesfully logged in!'
+                                }
+                            else:
+                                response.data = {
+                                    'message': 'Succesfully logged in!'
+                                }
+                    else:
+                        response.data = {
+                            'message': 'Succesfully logged in!'
+                        }
+                else:
+                    response.data = {
+                        'message': 'Succesfully logged in!'
+                    }
+
                 user.save()
             else:
                 if(not user.is_verified):
