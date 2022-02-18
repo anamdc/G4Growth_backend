@@ -11,7 +11,12 @@ class CourseSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class VideoListViewSerializers(serializers.ModelSerializer):
+class CourseUserSerializers(serializers.ModelSerializer):
     class Meta:
-        model = Video
-        fields = ['title', 'description', 'file']
+        model = CourseUser
+        fields = '__all__'
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+        instance.save()
+        return instance

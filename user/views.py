@@ -1,8 +1,3 @@
-from django.http.response import FileResponse
-from django.conf import settings
-from django.shortcuts import render
-from rest_framework import serializers
-from rest_framework import response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,6 +11,7 @@ import random
 class LoginView(APIView):
     def post(self, request):
         phoneno = request.data['phoneno']
+        referral_id = request.data['referral_id']
 
         user = User.objects.filter(phoneno=phoneno).first()
         if user is None:
@@ -46,6 +42,7 @@ class LoginView(APIView):
         }
         user.otp = otp
         user.otp_validity = time
+        user.referrer_id = referral_id
         user.save()
 
         return response

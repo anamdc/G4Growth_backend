@@ -1,7 +1,7 @@
+from urllib.parse import uses_relative
 from django.shortcuts import render
 
 # Create your views here.
-from django.conf import settings
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,13 +13,20 @@ from django.db import connection
 import jwt
 from rest_framework.exceptions import AuthenticationFailed
 from user.models import User
+from rest_framework.exceptions import AuthenticationFailed
+from django.db import connection
+from .serializers import *
+from .models import User
+import jwt
+import datetime
 
 
 class CoursesView(APIView):
     def get(self, request):
-                    # 'data': json.loads(CourseSerializers('json', courses))
+        # 'data': json.loads(CourseSerializers('json', courses))
         cursor = connection.cursor()
-        cursor.execute("SELECT id,title,description,cover_img,total_videos,price FROM courses_course where status = 'active'")
+        cursor.execute(
+            "SELECT id,title,description,cover_img,total_videos,price FROM courses_course where status = 'active'")
         data = []
         for row in cursor.fetchall():
             print(row)
@@ -41,11 +48,6 @@ class VideoListView(APIView):
     def post(self,request):
         token = request.COOKIES.get('jwt')
 
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Token Expired! Log in again.')
-
         # user = User.objects.filter(id=payload['id']).first()
         cursor = connection.cursor()
         course_id = request.data['course_id']
@@ -62,3 +64,23 @@ class VideoListView(APIView):
             data.append(res)
         print(data)
         return Response(data)
+
+class PurchaseView(APIView):
+    def post(self, request):
+
+        token = request.COOKIES.get('jwt')
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Token Expired! Log in again.')
+            
+        print(request.data, type(request.data))
+
+        serializer = CourseUserSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return(serializer.data)
