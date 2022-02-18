@@ -25,6 +25,7 @@ class User(AbstractBaseUser):
     otp_validity = models.DateTimeField(blank=True, null=True)
     is_logged = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     password = models.CharField(max_length=100, blank=True, null=True)
 
     USERNAME_FIELD = 'phoneno'

@@ -55,6 +55,6 @@ class CourseUser(models.Model):
     percentage = models.IntegerField(default=0)
     payment_ss = models.ImageField(
         storage=PublicMediaStorage, blank=True, null=True)
-
+    is_verified = models.BooleanField(default=False)
     def __str__(self):
         return self.userid

@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import serializers 
 import json 
 from .models import Course, CourseUser, Video, VideoUser
-from .serializers import CourseSerializers , VideoListViewSerializers
+from .serializers import CourseSerializers 
 from django.db import connection
 import jwt
 from rest_framework.exceptions import AuthenticationFailed
@@ -76,7 +76,7 @@ class PurchaseView(APIView):
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Token Expired! Log in again.')
-            
+
         print(request.data, type(request.data))
 
         serializer = CourseUserSerializers(data=request.data)

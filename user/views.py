@@ -78,17 +78,17 @@ class OTPView(APIView):
                 response.data = {
                     'message': 'Succesfully logged in!'
                 }
-                user.is_logged = True
+                user.is_verified = True
                 user.save()
             else:
-                if(not user.is_logged):
+                if(not user.is_verified):
                     User.objects.filter(id=payload['id']).delete()
                 response.delete_cookie('jwt')
                 response.data = {
                     'message': 'Otp didn\'t match! Try again!'
                 }
         else:
-            if(not user.is_logged):
+            if(not user.is_verified):
                 User.objects.filter(id=payload['id']).delete()
             response.delete_cookie('jwt')
             response.data = {
