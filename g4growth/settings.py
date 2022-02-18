@@ -157,3 +157,7 @@ PRIVATE_FILE_STORAGE = 'g4growth.storage_backends.PrivateMediaStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # STATICFILES_DIRS = ['/images/']
+
+CRONJOBS = [
+    ('*/1 * * * *', 'g4growth.cron.delete_expired')
+]
