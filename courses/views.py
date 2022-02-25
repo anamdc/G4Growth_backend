@@ -84,3 +84,26 @@ class PurchaseView(APIView):
         serializer.save()
 
         return(serializer.data)
+
+
+class MyCourse(APIView):
+    def post(self, request):
+        token = request.COOKIES.get('jwt')
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+        
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Token Expired! Log in again.')
+
+        mycourses = CourseUser.objects.filter(userid=payload['id'],is_verified = True)
+        print(mycourses)
+        serializer1 = CourseUserSerializers(mycourses, many=True)
+        course_ids = []
+        for course in serializer1.data:
+            course_ids.append(course['course_id'])
+        
+        query = "SELECT id,"
+
+        return Response(serializer1.data)

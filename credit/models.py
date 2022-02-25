@@ -2,8 +2,8 @@ from datetime import date
 from django.db import models
 
 # Create your models here.
-
 class Credit(models.Model):
+    id = models.AutoField(primary_key=True)
     userid = models.IntegerField()
     date = models.DateField(default=date.today)
     amount = models.IntegerField()

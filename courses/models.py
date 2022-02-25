@@ -44,7 +44,7 @@ class VideoUser(models.Model):
     is_watched = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.userid
+        return str(self.userid)
 
 
 class CourseUser(models.Model):
@@ -57,4 +57,4 @@ class CourseUser(models.Model):
         storage=PublicMediaStorage, blank=True, null=True)
     is_verified = models.BooleanField(default=False)
     def __str__(self):
-        return self.userid
+        return str(self.userid)
