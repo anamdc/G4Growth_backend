@@ -19,3 +19,4 @@ class Referrer_referee(models.Model):
 
     def __str__(self):
         return str(self.referrer_id) + " " + str(self.referee_id)
+
