@@ -7,7 +7,20 @@ import jwt
 import datetime
 import random
 from django.db import connection
+import urllib
 
+apik="NTM3MzY2NTI1OTc1NzM1ODM4NmU3NTMwNDEzMTZjNTg="
+sendern="BOOKRO"
+
+def sentOTP(apikey,numbers,sender,message):
+    data =  urllib.parse.urlencode({'apikey': apikey, 'numbers': numbers,
+        'message' : message, 'sender': sender})
+    data = data.encode('utf-8')
+    request = urllib.request.Request("https://api.textlocal.in/send/?")
+    f = urllib.request.urlopen(request, data)
+    fr = f.read()
+    print(fr)
+    return True
 
 class LoginView(APIView):
     def post(self, request):
@@ -35,12 +48,14 @@ class LoginView(APIView):
         otp = LoginView.send_otp()
         referral_code = user.referral_id
         time = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
+        
         response.data = {
             'jwt': token,
             'otp': otp,
             'referral': referral_code,
             'time': time
         }
+        # sentOTP(apik,phoneno,sendern,"Your OTP is "+str(otp))
         user.otp = otp
         user.otp_validity = time
         user.referrer_id = referrer_id
