@@ -83,7 +83,7 @@ class PurchaseView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return(serializer.data)
+        return Response(serializer.data)
 
 
 class MyCourse(APIView):
@@ -103,7 +103,5 @@ class MyCourse(APIView):
         course_ids = []
         for course in serializer1.data:
             course_ids.append(course['course_id'])
-        
-        query = "SELECT id,"
 
         return Response(serializer1.data)

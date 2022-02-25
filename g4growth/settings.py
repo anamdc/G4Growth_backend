@@ -159,5 +159,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # STATICFILES_DIRS = ['/images/']
 
 CRONJOBS = [
-    ('*/1 * * * *', 'g4growth.cron.delete_expired')
+    ('*/1 * * * *', 'g4growth.cron.delete_expired'),
+    ('*/3 * * * *', 'g4growth.cron.add_credit'),
 ]

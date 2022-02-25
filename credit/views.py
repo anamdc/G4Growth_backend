@@ -26,6 +26,8 @@ class EarningStatus(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Token Expired! Log in again.')
         response=Response()
+
+
         user = Credit.objects.filter(userid=payload['id'])#id is userid incredit model
         if user:
             #self.start=user[0].date
@@ -56,7 +58,10 @@ class EarningStatus(APIView):
         else:
             response.data = {
                 'user-id': payload['id'],
-                'message': "Invalid User",
+                'todays-income': 0,
+                'weekly-income': 0,
+                'monthly-income': 0,
+                'total-income':0,
             }
               
         return response
