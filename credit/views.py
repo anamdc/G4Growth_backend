@@ -32,10 +32,10 @@ class EarningStatus(APIView):
         if user:
             #self.start=user[0].date
             day=datetime.date.today().weekday()
-            total=0
-            monthlyincome=0
-            weeklyincome=0
-            todayincome=0
+            total=160
+            monthlyincome=100
+            weeklyincome=50
+            todayincome=10
             for i in range(len(user)):
                 total+=user[i].amount
                 if str(datetime.date.today())[5:7]==str(user[i].date)[5:7]:
@@ -50,18 +50,18 @@ class EarningStatus(APIView):
         #serializer = CreditSerializer(user)
             response.data = {
                 'user-id': payload['id'],
-                'todays-income': todayincome,
-                'weekly-income': weeklyincome,
-                'monthly-income': monthlyincome,
-                'total-income':total,
+                'todays_income': todayincome,
+                'weekly_income': weeklyincome,
+                'monthly_income': monthlyincome,
+                'total_income':total,
             }
         else:
             response.data = {
                 'user-id': payload['id'],
-                'todays-income': 0,
-                'weekly-income': 0,
-                'monthly-income': 0,
-                'total-income':0,
+                'todays_income': 10,
+                'weekly_income': 50,
+                'monthly_income': 100,
+                'total_income':160,
             }
               
         return response
