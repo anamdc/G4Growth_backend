@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import serializers 
 import json 
-from .models import Credit
+from .models import Credit, Referrer_referee
 #from .serializers import *
 from django.db import connection
 import jwt
@@ -29,6 +29,8 @@ class EarningStatus(APIView):
 
 
         user = Credit.objects.filter(userid=payload['id'])#id is userid incredit model
+        user1 = User.objects.filter(id= payload['id']).first()
+        referral_count=len(Referrer_referee.objects.filter(referrer_id = user1.referral_id))
         if user:
             #self.start=user[0].date
             day=datetime.date.today().weekday()
@@ -54,6 +56,7 @@ class EarningStatus(APIView):
                 'weekly_income': weeklyincome,
                 'monthly_income': monthlyincome,
                 'total_income':total,
+                'referral_count': referral_count,
             }
         else:
             response.data = {
@@ -62,6 +65,7 @@ class EarningStatus(APIView):
                 'weekly_income': 50,
                 'monthly_income': 100,
                 'total_income':160,
+                'referral_count': 0,
             }
               
         return response
