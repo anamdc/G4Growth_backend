@@ -123,11 +123,13 @@ class OTPView(APIView):
                                 query1 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_2.id}, {user.id}, 1)"
                                 cursor.execute(query1)
                     else:
+                        user.is_verified = True
                         user.save()
                         response.data = {
                             'message': 'Succesfully logged in!'
                         }
                 else:
+                    user.is_verified = True
                     user.save()
                     response.data = {
                         'message': 'Succesfully logged in!'
