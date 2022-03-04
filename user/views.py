@@ -55,7 +55,7 @@ class LoginView(APIView):
             'referral': referral_code,
             'time': time
         }
-        # sentOTP(apik,phoneno,sendern,"Your OTP is "+str(otp))
+        sentOTP(apik,phoneno,sendern,"Your OTP is "+str(otp))
         user.otp = otp
         user.otp_validity = time
         user.referrer_id = referrer_id
