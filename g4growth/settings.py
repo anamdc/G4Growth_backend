@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
-    "http://www.g4growth.com/"
+    "http://www.g4growth.com"
 ]
 
 CORS_ALLOW_METHODS = [
