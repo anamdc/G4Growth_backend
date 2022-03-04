@@ -7,7 +7,20 @@ import jwt
 import datetime
 import random
 from django.db import connection
+import urllib
 
+apik="NTM3MzY2NTI1OTc1NzM1ODM4NmU3NTMwNDEzMTZjNTg="
+sendern="BOOKRO"
+
+def sentOTP(apikey,numbers,sender,message):
+    data =  urllib.parse.urlencode({'apikey': apikey, 'numbers': numbers,
+        'message' : message, 'sender': sender})
+    data = data.encode('utf-8')
+    request = urllib.request.Request("https://api.textlocal.in/send/?")
+    f = urllib.request.urlopen(request, data)
+    fr = f.read()
+    print(fr)
+    return True
 
 class LoginView(APIView):
     def post(self, request):
@@ -28,19 +41,21 @@ class LoginView(APIView):
             'iat': datetime.datetime.utcnow(),
         }
 
-        token = jwt.encode(payload, 'secret', algorithm='HS256')
+        token = jwt.encode(payload, 'secret00', algorithm='HS256')
 
         response = Response()
         response.set_cookie(key='jwt', value=token, httponly=True)
         otp = LoginView.send_otp()
         referral_code = user.referral_id
         time = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
+        
         response.data = {
             'jwt': token,
             'otp': otp,
             'referral': referral_code,
             'time': time
         }
+        sentOTP(apik,phoneno,sendern,"Your OTP is "+str(otp))
         user.otp = otp
         user.otp_validity = time
         user.referrer_id = referrer_id
@@ -60,7 +75,7 @@ class OTPView(APIView):
             raise AuthenticationFailed('Unauthenticated')
 
         try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            payload = jwt.decode(token, 'secret00', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Token Expired! Log in again.')
 
@@ -77,6 +92,13 @@ class OTPView(APIView):
         cursor = connection.cursor()
         if(user.otp_validity.replace(tzinfo=None) >= datetime.datetime.utcnow()):
             if(otp == otp2):
+                payload = {
+                    'id': user.id,
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=3600),
+                    'iat': datetime.datetime.utcnow(),
+                }
+                token = jwt.encode(payload, 'secret', algorithm='HS256')
+                response.set_cookie(key='jwt', value=token, httponly=True)
                 if not user.is_verified:
                     if user.referrer_id:
                         referrer_1 = User.objects.filter(
@@ -101,11 +123,13 @@ class OTPView(APIView):
                                 query1 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_2.id}, {user.id}, 1)"
                                 cursor.execute(query1)
                     else:
+                        user.is_verified = True
                         user.save()
                         response.data = {
                             'message': 'Succesfully logged in!'
                         }
                 else:
+                    user.is_verified = True
                     user.save()
                     response.data = {
                         'message': 'Succesfully logged in!'
@@ -153,7 +177,7 @@ class UserView(APIView):
 
     def get(self, request):
         token = request.COOKIES.get('jwt')
-
+        print(token)
         if not token:
             raise AuthenticationFailed('Unauthenticated')
 
@@ -224,5 +248,21 @@ class UpdateView(APIView):
 
         response.data = {
             'message': 'Profile successfully updated!'
+        }
+        return response
+
+class AuthenticationCheck(APIView):
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Token Expired! Log in again.')
+        response = Response()
+        response.data = {
+            'message': 'You are authenticated!'
         }
         return response
