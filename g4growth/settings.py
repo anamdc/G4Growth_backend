@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-wb2*ep&kicc)#h_#s_)57rzg12@$!7jxmh-m@gonm0@q9p#$6)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '*', 'http://g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com/']
@@ -131,9 +131,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'images'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'images'),
+# ]
 
 AWS_ACCESS_KEY_ID = 'AKIA6MATVUNHQTFOPPNF'
 AWS_SECRET_ACCESS_KEY = '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'
