@@ -51,8 +51,10 @@ class VideoListView(APIView):
         # user = User.objects.filter(id=payload['id']).first()
         cursor = connection.cursor()
         course_id = request.data['course_id']
+        
 
-        cursor.execute("SELECT id,title,description FROM courses_video where course_id = %s and status = 'active'",[course_id])
+
+        cursor.execute("SELECT id,title,description,file FROM courses_video where course_id = %s and status = 'active'",[course_id])
         data = []
         
         for row in cursor.fetchall():
@@ -61,6 +63,7 @@ class VideoListView(APIView):
             res['id'] = row[0]
             res['title'] = row[1]
             res['description'] = row[2]
+            res['video_url'] = "https://g4growth-courses.s3.amazonaws.com/courses/public/"+ row[3]
             data.append(res)
         print(data)
         return Response(data)
