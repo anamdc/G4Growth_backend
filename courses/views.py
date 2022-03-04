@@ -90,7 +90,7 @@ class PurchaseView(APIView):
 
 
 class MyCourse(APIView):
-    def post(self, request):
+    def get(self, request):
         token = request.COOKIES.get('jwt')
         if not token:
             raise AuthenticationFailed('Unauthenticated')
@@ -101,10 +101,29 @@ class MyCourse(APIView):
             raise AuthenticationFailed('Token Expired! Log in again.')
 
         mycourses = CourseUser.objects.filter(userid=payload['id'],is_verified = True)
-        print(mycourses)
+        print(payload['id'])
         serializer1 = CourseUserSerializers(mycourses, many=True)
+        # course_ids = []
+        # for course in serializer1.data:
+        #     course_ids.append(course['course_id'])
+        l=(len(serializer1.data))
         course_ids = []
-        for course in serializer1.data:
-            course_ids.append(course['course_id'])
 
-        return Response(serializer1.data)
+        for i in range(l):
+            # print(serializer1.data[i]['courseid'])
+            course_ids.append(serializer1.data[i]['courseid'])
+        print(course_ids)
+
+        course_ids = list(set(course_ids))
+
+        couses = Course.objects.filter(id__in=course_ids)
+        serializer2 = CourseSerializers(couses, many=True)
+        print(serializer2.data)
+        data  = {
+            "data": serializer2.data
+        }
+        print(data)
+
+        return Response(data)
+
+

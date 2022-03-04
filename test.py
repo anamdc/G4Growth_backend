@@ -15,5 +15,5 @@ def sentOTP(apikey,numbers,sender,message):
     fr = f.read()
     print(fr)
     return True
-
-sentOTP(apik,9774546207,sendern,"Your OTP is "+str(129934))
+template = f"Your Login OTP for Bookkaaro is {123456}. Please do not share this with anyone."
+sentOTP(apik,9774546207,sendern,template)
