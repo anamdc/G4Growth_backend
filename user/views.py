@@ -55,8 +55,8 @@ class LoginView(APIView):
             'referral': referral_code,
             'time': time
         }
-        # template = f"Your Login OTP for Bookkaaro is {otp}. Please do not share this with anyone."
-        # sentOTP(apik,phoneno,sendern,template)
+        template = f"Your Login OTP for Bookkaaro is {otp}. Please do not share this with anyone."
+        sentOTP(apik,phoneno,sendern,template)
         user.otp = otp
         user.otp_validity = time
         user.referrer_id = referrer_id
