@@ -61,10 +61,10 @@ class EarningStatus(APIView):
         else:
             response.data = {
                 'user-id': payload['id'],
-                'todays_income': 10,
-                'weekly_income': 50,
-                'monthly_income': 100,
-                'total_income':160,
+                'todays_income': 0,
+                'weekly_income': 0,
+                'monthly_income': 0,
+                'total_income':0,
                 'referral_count': 0,
             }
               
