@@ -57,7 +57,7 @@ class VideoListView(APIView):
 
         # user = User.objects.filter(id=payload['id']).first()
         cursor = connection.cursor()
-        course_id = request.data['course_id']
+        course_id = request.data['courseid']
         
         k = CourseUser.objects.filter(courseid=course_id,userid=payload['id']).first()
         if k is None:
@@ -72,7 +72,7 @@ class VideoListView(APIView):
             res['id'] = row[0]
             res['title'] = row[1]
             res['description'] = row[2]
-            res['video_url'] = "https://g4growth-courses.s3.amazonaws.com/courses/public/"+ row[3]
+            res['video_url'] = "https://g4growth-courses.s3.amazonaws.com/courses/"+ row[3]
             data.append(res)
         print(data)
         return Response(data)
