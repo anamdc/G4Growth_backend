@@ -5,6 +5,7 @@ from django.conf import settings
 class MediaStorage(S3Boto3Storage):
     location = 'courses'
     file_overwrite = False
+    default_acl = 'public-read'
 
 class StaticStorage(S3Boto3Storage):
     location = settings.AWS_STATIC_LOCATION
