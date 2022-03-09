@@ -44,6 +44,22 @@ class CoursesView(APIView):
         }
         return response
 
+
+class CourseDetailsView(APIView):
+    def post(self,request):
+        data = request.data
+        course_id = data['course_id']
+        course_details = Course.objects.filter(id=course_id).first()
+        videos = Video.objects.filter(course_id=course_id).all()
+        course_details = CourseSerializers(course_details)
+        videos = VideoSerializers(videos, many=True)
+        response = Response()
+        response.data = {
+            'course_details': course_details.data,
+            'videos': videos.data
+        }
+        return response
+
 class VideoListView(APIView):
     def post(self,request):
         token = request.COOKIES.get('jwt')

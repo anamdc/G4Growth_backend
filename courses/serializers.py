@@ -20,3 +20,8 @@ class CourseUserSerializers(serializers.ModelSerializer):
         instance = self.Meta.model(**validated_data)
         instance.save()
         return instance
+
+class VideoSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = 'id','course','title','description'

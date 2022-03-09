@@ -1,6 +1,7 @@
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from credit.models import Referrer_referee
 from .serializers import *
 from .models import User
 import jwt
@@ -190,7 +191,19 @@ class UserView(APIView):
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializers(user)
 
-        return Response(serializer.data)
+
+        referees = Referrer_referee.objects.filter(
+            referrer_id=user.id)
+        l = len(referees)
+        response = Response()
+        response.data = {
+            'user': serializer.data,
+            'referees': l
+        }
+        return response
+
+
+        # return Response(serializer.data)
 
 
 class UpdateView(APIView):
