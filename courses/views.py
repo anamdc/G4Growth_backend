@@ -83,12 +83,14 @@ class VideoListView(APIView):
         data = []
         
         for row in cursor.fetchall():
+            video_user = VideoUser.objects.filter(videoid=row[0],userid=payload['id']).first()
             print(row)
             res = {}
             res['id'] = row[0]
             res['title'] = row[1]
             res['description'] = row[2]
-            res['video_url'] = "https://g4growth-courses.s3.amazonaws.com/courses/"+ row[3]
+            res['video_url'] = f"https://g4growth-courses.s3.amazonaws.com/courses/{row[3]}"
+            res['is_watched'] = video_user.is_watched
             data.append(res)
         print(data)
         return Response(data)

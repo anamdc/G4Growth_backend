@@ -31,5 +31,5 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'phoneno'
 
     def __str__(self):
-        return str(self.phoneno)
+        return str(self.phoneno) + '|' + str(self.name)
 

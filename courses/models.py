@@ -33,7 +33,7 @@ class Video(models.Model):
         max_length=8, choices=status_choices, default='active')
 
     def __str__(self):
-        return self.title
+        return str(self.course) + '>' + str(self.title)
 
 
 class VideoUser(models.Model):
@@ -44,7 +44,7 @@ class VideoUser(models.Model):
     is_watched = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.userid)
+        return str(self.userid) + '&' + str(self.videoid)
 
 
 class CourseUser(models.Model):
@@ -58,4 +58,4 @@ class CourseUser(models.Model):
     is_verified = models.BooleanField(default=False)
     is_processed = models.BooleanField(default=False)
     def __str__(self):
-        return str(self.userid)
+        return str(self.userid) + '&' + str(self.courseid)
