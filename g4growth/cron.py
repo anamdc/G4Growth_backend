@@ -44,10 +44,12 @@ def update_credit(userid, price):
             print(row)
             if (row[2] == False):
                 amount = price * 0.02
-                Credit.objects.create(userid = row[1], amount = amount, referee = userid)
+                # Credit.objects.create(userid = row[1], amount = amount, referee = userid)
             elif (row[2] == True):
                 amount = price * 0.05
-                Credit.objects.create(userid = row[1], amount = amount, referee = userid)
+                # Credit.objects.create(userid = row[1], amount = amount, referee = userid)
+            Q2 = f"INSERT INTO `credit_credit` ( `userid_id`, `amount`, `referee`) VALUES ('{row[1]}', '{amount}', '{userid}');"
+            cursor.execute(Q2)
     else:
         pass
 
