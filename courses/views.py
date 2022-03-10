@@ -127,25 +127,33 @@ class MyCourse(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Token Expired! Log in again.')
 
-        mycourses = CourseUser.objects.filter(userid=payload['id'],is_verified = True)
+        mycourses = CourseUser.objects.filter(userid=payload['id'])
         print(payload['id'])
         serializer1 = CourseUserSerializers(mycourses, many=True)
         # course_ids = []
         # for course in serializer1.data:
         #     course_ids.append(course['course_id'])
-        l=(len(serializer1.data))
+        # l=(len(serializer1.data))
         course_ids = []
-
-        for i in range(l):
             # print(serializer1.data[i]['courseid'])
-            course_ids.append(serializer1.data[i]['courseid'])
-        print(course_ids)
+        for courseUser in serializer1.data:
+            course_ids.append(courseUser['courseid'])
+            
 
         course_ids = list(set(course_ids))
-
         couses = Course.objects.filter(id__in=course_ids)
+
+        # course_user = CourseUser.objects.filter(courseid=)
+
         serializer2 = CourseSerializers(couses, many=True)
         print(serializer2.data)
+
+        for course in serializer2.data:
+            for fields in serializer1.data:
+                if course['id'] == fields['courseid']:
+                    course['is_verified'] = fields['is_verified']
+                    break
+    
         data  = {
             "data": serializer2.data
         }
