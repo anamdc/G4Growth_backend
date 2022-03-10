@@ -92,7 +92,7 @@ class VideoListView(APIView):
             res['video_url'] = f"https://g4growth-courses.s3.amazonaws.com/courses/{row[3]}"
             res['is_watched'] = video_user.is_watched
             data.append(res)
-        print(data)
+        # print(data)
         return Response(data)
 
 class PurchaseView(APIView):
@@ -153,4 +153,22 @@ class MyCourse(APIView):
 
         return Response(data)
 
+class VideoWatched(APIView):
+    def post(self, request):
+        token = request.COOKIES.get('jwt')
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+        
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Token Expired! Log in again.')
+
+        data = request.data
+        print(data)
+        video_id = data['video_id']
+        video_user = VideoUser.objects.filter(videoid=video_id,userid=payload['id']).first()
+        video_user.is_watched = True
+        video_user.save()
+        return Response()
 

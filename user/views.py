@@ -48,11 +48,10 @@ class LoginView(APIView):
         response.set_cookie(key='jwt', value=token, httponly=True)
         otp = LoginView.send_otp()
         referral_code = user.referral_id
-        time = datetime.datetime.utcnow() + datetime.timedelta(seconds=120)
-        
+        time = datetime.datetime.utcnow() + datetime.timedelta(seconds=240)
+            #         'jwt': token,
+            # 'otp': otp,
         response.data = {
-            'jwt': token,
-            'otp': otp,
             'referral': referral_code,
             'time': time
         }
@@ -96,7 +95,7 @@ class OTPView(APIView):
             if(otp == otp2):
                 payload = {
                     'id': user.id,
-                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=3600),
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=432000),
                     'iat': datetime.datetime.utcnow(),
                 }
                 token = jwt.encode(payload, 'secret', algorithm='HS256')
