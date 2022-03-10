@@ -170,5 +170,9 @@ class VideoWatched(APIView):
         video_user = VideoUser.objects.filter(videoid=video_id,userid=payload['id']).first()
         video_user.is_watched = True
         video_user.save()
-        return Response()
+        response =  Response()
+        response.data = {
+            "success" : True
+        }
+        return response 
 
