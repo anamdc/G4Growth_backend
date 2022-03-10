@@ -43,7 +43,7 @@ CORS_ALLOW_METHODS = [
 'POST'
 ]
 # Application definition
-
+CORS_ALLOW_CREDENTIALS = True
 INSTALLED_APPS = [
     'django_crontab',
     'user',
