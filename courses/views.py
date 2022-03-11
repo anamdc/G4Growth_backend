@@ -18,7 +18,10 @@ from django.db import connection
 from .serializers import *
 from .models import User
 import jwt
-import datetime
+from datetime import *
+
+def nothing():
+        print("Nothing")
 
 
 class CoursesView(APIView):
@@ -184,56 +187,76 @@ class VideoWatched(APIView):
         }
         return response 
 
-class ProcessCreditView(APIView):
-    def update_credit(userid, price):
+def create_video_user(course_id,user_id):
+    Q = f"SELECT `id` FROM courses_video where `course_id` ={course_id};"
+    cursor  = connection.cursor()
+    cursor.execute(Q)
+    rows = cursor.fetchall()
+    now  = datetime.now()
+    for row in rows:
+        Q2 = f"INSERT INTO `courses_videouser` ( `date_purchased`, `is_watched`, `userid_id`, `videoid_id`) VALUES ('{now}', '0', '{user_id}','{row[0]}');"
+        print(Q2)
+        cursor.execute(Q2)
+        print("Insertion complete")
+    cursor.close()
+    return
+
+def update_credit(userid, price):
         Q = f"SELECT * FROM `credit_referrer_referee` where `referee_id` = {userid};"
-        cursor  = connection.cursor()
-        cursor.execute(Q)
-        rows = cursor.fetchall()
-        print(rows)
+        try:
+            cursor  = connection.cursor()
+            cursor.execute(Q)
+            rows = cursor.fetchall()
+        except Exception as e:
+            print(e)
+            return
+        print(f"{rows} rows found, length = {len(rows)}")
         if (len(rows) > 0):
             for row in rows:
                 print(row)
-                if (row[2] == False):
-                    amount = price * 0.02
+                today = date.today()
+                now = datetime.now()
+                if (row[3] == 0):
+                    amount = float(price) * float(0.02)
                     # Credit.objects.create(userid = row[1], amount = amount, referee = userid)
-                elif (row[2] == True):
-                    amount = price * 0.05
+                    Q2 = f"INSERT INTO `credit_credit` ( `userid`,`date`, `amount`, `referee`) VALUES ('{row[1]}','{now}', '{amount}', '{userid}');"
+                    print(Q2)
+                    cursor.execute(Q2)
+                    print("Credit Insertion complete")
+                    cursor.close()
+                elif (row[3] == 1):
+                    amount = float(price) * float(0.05)
                     # Credit.objects.create(userid = row[1], amount = amount, referee = userid)
-                Q2 = f"INSERT INTO `credit_credit` ( `userid_id`, `amount`, `referee`) VALUES ('{row[1]}', '{amount}', '{userid}');"
-                cursor.execute(Q2)
+                    Q2 = f"INSERT INTO `credit_credit` ( `userid`, `date`,`amount`, `referee`) VALUES ('{row[1]}','{now}', '{amount}', '{userid}');"
+                    print(Q2)
+                    cursor.execute(Q2)
+                    print("Credit Insertion complete")
+                    cursor.close()
         else:
             pass
 
-    def create_video_user(course_id,user_id):
-        Q = f"SELECT `id` FROM courses_video where `course_id` ={course_id};"
-        cursor  = connection.cursor()
-        cursor.execute(Q)
-        rows = cursor.fetchall()
-        now  = datetime.datetime.now()
-        for row in rows:
-            Q2 = f"INSERT INTO `courses_videouser` ( `date_purchased`, `is_watched`, `userid_id`, `videoid_id`) VALUES ('{now}', '0', '{user_id}','{row[0]}');"
-            cursor.execute(Q2)
-        cursor.close()
-        return
+class ProcessCreditView(APIView):
 
     def post(self,request):
         Q = "SELECT `courseid_id`,`userid_id` FROM courses_courseuser where `is_verified` = 1 and `is_processed` = 0;"
+        print(Q)
         cursor  = connection.cursor()
         cursor.execute(Q)
         rows = cursor.fetchall()
         if (len(rows) > 0):
+            print("FLAG\n")
             for row in rows:
                 user_id =   row[1]
                 course_id = row[0]
                 course = Course.objects.get(id = course_id)
                 price = course.price
-                print(price)
+                print(price,user_id,course_id)
                 # print(course_id, user_id)
-                self.create_video_user(course_id,user_id)
-                self.update_credit(user_id,price)
+                create_video_user(course_id,user_id)
+                update_credit(user_id,price)
             CourseUser.objects.filter(is_verified = True, is_processed = False).update(is_processed = True)
         else:
+            nothing()
             pass
         response = Response()
         return response
