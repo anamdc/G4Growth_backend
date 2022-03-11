@@ -30,7 +30,7 @@ class EarningStatus(APIView):
 
         user = Credit.objects.filter(userid=payload['id'])#id is userid incredit model
         user1 = User.objects.filter(id= payload['id']).first()
-        referral_count=len(Referrer_referee.objects.filter(referrer_id = user1.referral_id))
+        referral_count=len(Referrer_referee.objects.filter(referrer_id = user1.id))
         if user:
             #self.start=user[0].date
             day=datetime.date.today().weekday()
