@@ -133,12 +133,7 @@ class MyCourse(APIView):
         mycourses = CourseUser.objects.filter(userid=payload['id'])
         print(payload['id'])
         serializer1 = CourseUserSerializers(mycourses, many=True)
-        # course_ids = []
-        # for course in serializer1.data:
-        #     course_ids.append(course['course_id'])
-        # l=(len(serializer1.data))
         course_ids = []
-            # print(serializer1.data[i]['courseid'])
         for courseUser in serializer1.data:
             course_ids.append(courseUser['courseid'])
             
