@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-wb2*ep&kicc)#h_#s_)57rzg12@$!7jxmh-m@gonm0@q9p#$6)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '*', 'http://g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com/']
@@ -170,5 +170,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
     ('*/1 * * * *', 'g4growth.cron.delete_expired'),
-    ('*/3 * * * *', 'g4growth.cron.add_credit'),
+    ('*/2 * * * *', 'g4growth.cron.add_credit'),
 ]
