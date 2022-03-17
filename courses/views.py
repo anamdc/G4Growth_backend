@@ -87,7 +87,7 @@ class VideoListView(APIView):
         
         for row in cursor.fetchall():
             video_user = VideoUser.objects.filter(videoid=row[0],userid=payload['id']).first()
-            print(row)
+            # print(f"\033[33m{row}")
             res = {}
             res['id'] = row[0]
             res['title'] = row[1]

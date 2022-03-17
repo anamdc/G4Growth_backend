@@ -170,6 +170,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
     ('*/1 * * * *', 'g4growth.cron.delete_expired'),
-    ('*/2 * * * *', 'g4growth.cron.add_credit'),
+    ('*/1 * * * *', 'g4growth.cron.add_credit'),
 ]
 
