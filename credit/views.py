@@ -34,10 +34,10 @@ class EarningStatus(APIView):
         if user:
             #self.start=user[0].date
             day=datetime.date.today().weekday()
-            total=160
-            monthlyincome=100
-            weeklyincome=50
-            todayincome=10
+            total=0
+            monthlyincome=0
+            weeklyincome=0
+            todayincome=0
             for i in range(len(user)):
                 total+=user[i].amount
                 if str(datetime.date.today())[5:7]==str(user[i].date)[5:7]:
