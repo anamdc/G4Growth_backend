@@ -27,7 +27,7 @@ class Video(models.Model):
     id = models.AutoField(primary_key=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    description = models.TextField()
+    description = models.TextField(blank= True)
     file = models.FileField(storage=MediaStorage, blank=True, null=True)
     status = models.CharField(
         max_length=8, choices=status_choices, default='active')
