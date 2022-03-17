@@ -43,7 +43,7 @@ CORS_ALLOW_METHODS = [
 'POST'
 ]
 # Application definition
-
+CORS_ALLOW_CREDENTIALS = True
 INSTALLED_APPS = [
     'django_crontab',
     'user',
@@ -172,3 +172,4 @@ CRONJOBS = [
     ('*/1 * * * *', 'g4growth.cron.delete_expired'),
     ('*/2 * * * *', 'g4growth.cron.add_credit'),
 ]
+
