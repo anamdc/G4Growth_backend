@@ -212,7 +212,7 @@ def update_credit(userid, price):
                 today = date.today()
                 now = datetime.now()
                 if (row[3] == 0):
-                    amount = float(price) * float(0.02)
+                    amount = float(price) * float(0.533022015)
                     # Credit.objects.create(userid = row[1], amount = amount, referee = userid)
                     Q2 = f"INSERT INTO `credit_credit` ( `userid`,`date`, `amount`, `referee`) VALUES ('{row[1]}','{now}', '{amount}', '{userid}');"
                     print(Q2)
@@ -220,7 +220,7 @@ def update_credit(userid, price):
                     print("Credit Insertion complete")
                     cursor.close()
                 elif (row[3] == 1):
-                    amount = float(price) * float(0.05)
+                    amount = float(price) * float(0.16611074)
                     # Credit.objects.create(userid = row[1], amount = amount, referee = userid)
                     Q2 = f"INSERT INTO `credit_credit` ( `userid`, `date`,`amount`, `referee`) VALUES ('{row[1]}','{now}', '{amount}', '{userid}');"
                     print(Q2)
