@@ -32,7 +32,7 @@ class CoursesView(APIView):
             "SELECT id,title,description,cover_img,total_videos,price FROM courses_course where status = 'active'")
         data = []
         for row in cursor.fetchall():
-            print(row)
+            # print(row)
             res = {}
             res['id'] = row[0]
             res['title'] = row[1]
@@ -218,7 +218,7 @@ def update_credit(userid, price):
                     print(Q2)
                     cursor.execute(Q2)
                     print("Credit Insertion complete")
-                    cursor.close()
+                    # cursor.close()
                 elif (row[3] == 1):
                     amount = float(price) * float(0.16611074)
                     # Credit.objects.create(userid = row[1], amount = amount, referee = userid)
@@ -226,7 +226,15 @@ def update_credit(userid, price):
                     print(Q2)
                     cursor.execute(Q2)
                     print("Credit Insertion complete")
-                    cursor.close()
+                    # cursor.close()
+                elif (row[3] == 2):
+                    amount = float(price) * float(0.993995997)
+                    # Credit.objects.create(userid = row[1], amount = amount, referee = userid)
+                    Q2 = f"INSERT INTO `credit_credit` ( `userid`, `date`,`amount`, `referee`) VALUES ('{row[1]}','{now}', '{amount}', '{userid}');"
+                    print(Q2)
+                    cursor.execute(Q2)
+                    print("Credit Insertion complete")
+                    # cursor.close()
         else:
             pass
 
@@ -255,3 +263,5 @@ class ProcessCreditView(APIView):
             pass
         response = Response()
         return response
+
+        

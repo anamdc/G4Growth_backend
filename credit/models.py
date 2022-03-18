@@ -15,7 +15,7 @@ class Credit(models.Model):
 class Referrer_referee(models.Model):
     referrer_id = models.CharField(max_length=9, blank=True)
     referee_id = models.CharField(max_length=9, blank=True)
-    level = models.BooleanField(default=False)
+    level = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.referrer_id) + " " + str(self.referee_id)

@@ -53,10 +53,11 @@ class LoginView(APIView):
             # 'otp': otp,
         response.data = {
             'referral': referral_code,
-            'time': time
+            'time': time,
+            'otp': otp,
         }
         template = f"Your Login OTP for Bookkaaro is {otp}. Please do not share this with anyone."
-        sentOTP(apik,phoneno,sendern,template)
+        # sentOTP(apik,phoneno,sendern,template)
         user.otp = otp
         user.otp_validity = time
         user.referrer_id = referrer_id
@@ -106,6 +107,7 @@ class OTPView(APIView):
                             referral_id=user.referrer_id).first()
                         if not referrer_1:
                             response.delete_cookie('jwt')
+                            cursor.close()
                             response.data = {
                                 'message': 'Wrong referrer ID, try again!'
                             }
@@ -116,13 +118,26 @@ class OTPView(APIView):
                                 'message': 'Succesfully logged in!'
                             }
                             query1 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_1.id}, {user.id}, 0)"
+                            print(query1)
                             cursor.execute(query1)
 
                             if referrer_1.referrer_id:
                                 referrer_2 = User.objects.filter(
                                     referral_id=referrer_1.referrer_id).first()
-                                query1 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_2.id}, {user.id}, 1)"
-                                cursor.execute(query1)
+                                # print(query2)
+                                query2 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_2.id}, {user.id}, 1)"
+                                cursor.execute(query2)
+
+                                if referrer_2.referrer_id:
+                                    referrer_3 = User.objects.filter( referral_id=referrer_2.referrer_id).first()
+                                    query3 = f"Insert INTO credit_referrer_referee (referrer_id, referee_id, level) VALUES ({referrer_3.id}, {user.id}, 2)"
+                                    print(query3)
+                                    cursor.execute(query3)
+                                    cursor.close()
+                                else:
+                                    cursor.close()
+                            else:
+                                cursor.close()
                     else:
                         user.is_verified = True
                         user.save()
