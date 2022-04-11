@@ -37,8 +37,8 @@ server {
                 }
 
         listen 443 ssl;
-        ssl_certificate /etc/letsencrypt/live/api.g4growth.com/fullchain.pem; 
-         ssl_certificate_key /etc/letsencrypt/live/api.g4growth.com/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/api.educationaurearning.com/fullchain.pem; 
+         ssl_certificate_key /etc/letsencrypt/live/api.educationaurearning.com/privkey.pem;
 
         include /etc/letsencrypt/options-ssl-nginx.conf;
 
