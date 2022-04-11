@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
-    "https://educationaurearning.com" , "https://api.educationaurearning.com", "https://www.educationaurearning.com", "http://127.0.0.1","http://3.7.75.15"
+    "https://educationaurearning.com" , "https://api.educationaurearning.com", "https://www.educationaurearning.com", "http://127.0.0.1:80", "http://127.0.0.1:443","http://3.7.75.15"
 ]
 
 CORS_ALLOW_METHODS = [
