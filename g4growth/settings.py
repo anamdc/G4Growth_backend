@@ -98,10 +98,10 @@ WSGI_APPLICATION = 'g4growth.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'g4growth_db',
+        'NAME': 'G4GDB',
         'USER': 'admin',
         'PASSWORD': '5BlQFWShWe4zCOrxYer2',
-        'HOST': 'g4growth.chppukqmi3c6.ap-south-1.rds.amazonaws.com',
+        'HOST': 'g4growth-db.cxiiazi90p1x.ap-south-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
@@ -145,9 +145,12 @@ USE_TZ = True
 #     os.path.join(BASE_DIR, 'images'),
 # ]
 
-AWS_ACCESS_KEY_ID = 'AKIA6MATVUNHQTFOPPNF'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'g4growth-courses'
+# AWS_ACCESS_KEY_ID = 'AKIA6MATVUNHQTFOPPNF'
+# AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = 'AKIAYG2YFYWGXSQERGX6'
+AWS_SECRET_ACCESS_KEY = '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'
+# PPASSWORD = 'eTU&x+]0VEsvc(E'
+AWS_STORAGE_BUCKET_NAME = 'g4growth-courses-new'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
