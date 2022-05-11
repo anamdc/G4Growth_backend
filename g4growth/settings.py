@@ -175,4 +175,5 @@ CRONJOBS = [
     ('*/1 * * * *', 'g4growth.cron.delete_expired'),
     ('*/1 * * * *', 'g4growth.cron.add_credit'),
 ]
-
+CSRF_COOKIE_SECURE=True
+CSRF_TRUSTED_ORIGINS=['https://*.educationaurearning.com']
